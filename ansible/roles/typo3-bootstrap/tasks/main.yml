@@ -53,3 +53,25 @@
   tags:
     - fluidtypo3
     - fluidtypo3install
+
+- name: clone more typo3 extensions to typo3conf/ext
+  git: repo=https://github.com/TYPO3-extensions/{{item.extensionname}}.git dest=/data{{nginx_home_subfolder}}/typo3conf/ext/{{item.extensionname}} version={{item.version}}
+  with_items:
+    - { extensionname: 'realurl', version: 'master' }
+    - { extensionname: 'crawler', version: 'master' }
+    - { extensionname: 'linkvalidator', version: 'master' }
+  tags:
+    - typo3extensions
+    - typo3extensionsclone
+
+- name: install typo3 extensions
+  command: "/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh extbase extension:install {{item.extensionname}}"
+  with_items:
+    - { extensionname: 'realurl' }
+    - { extensionname: 'crawler' }
+    - { extensionname: 'linkvalidator' }
+    - { extensionname: 'indexed_search' }
+    - { extensionname: 'scheduler' }
+  tags:
+    - typo3extensions
+    - typo3extensionsinstall
