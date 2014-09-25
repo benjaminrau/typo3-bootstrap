@@ -4,7 +4,7 @@
     - typo3clone
 
 - name: create typo3 configuration matching the local env
-  template: src=../templates/{{item.path}} dest=/data{{nginx_home_subfolder}}/typo3conf/{{item.dest}} mode={{item.mode}}
+  template: src=../templates/{{item.path}} dest=/data/web/typo3conf/{{item.dest}} mode={{item.mode}}
   with_items:
     - { path: 'LocalConfiguration.php', dest: 'LocalConfiguration.php', mode: 644 }
     - { path: 'AdditionalConfiguration.php', dest: 'AdditionalConfiguration.php', mode: 644 }
@@ -12,13 +12,13 @@
     - templates
 
 - name: copy latest typo3 htaccess file to the document root
-  copy: src=../../../../../TYPO3.CMS/_.htaccess dest=/data{{nginx_home_subfolder}}/.htaccess
+  copy: src=../../../../../TYPO3.CMS/_.htaccess dest=/data/web/.htaccess
 
 - name: create symlinks for TYPO3 sources
-  file: path=/data{{nginx_home_subfolder}}/typo3_src src=../TYPO3.CMS state=link force=yes
+  file: path=/data/web/typo3_src src=../TYPO3.CMS state=link force=yes
 
-- file: path=/data{{nginx_home_subfolder}}/typo3 src=typo3_src/typo3 state=link force=yes
-- file: path=/data{{nginx_home_subfolder}}/index.php src=typo3_src/index.php state=link force=yes
+- file: path=/data/web/typo3 src=typo3_src/typo3 state=link force=yes
+- file: path=/data/web/index.php src=typo3_src/index.php state=link force=yes
 
 - name: create a new database with name {{ database_name }}
   mysql_db: login_user=root login_password={{ mysql_root_password }} login_host=localhost name={{ database_name }} encoding=utf8 state=present
@@ -33,7 +33,7 @@
   mysql_db: login_user=root login_password={{ mysql_root_password }} login_host=localhost name={{ database_name }} encoding=utf8 state=import target=/tmp/latest_dump.sql
 
 - name: clone FluidTYPO3 repositories to typo3conf/ext
-  git: repo={{item.repo}} dest=/data{{nginx_home_subfolder}}/typo3conf/ext/{{item.dest}} version={{item.version}}
+  git: repo={{item.repo}} dest=/data/web/typo3conf/ext/{{item.dest}} version={{item.version}}
   with_items:
     - { repo: 'https://github.com/FluidTYPO3/flux.git', dest: 'flux', version: 'development' }
     - { repo: 'https://github.com/FluidTYPO3/fluidcontent.git', dest: 'fluidcontent', version: 'development' }
@@ -49,19 +49,19 @@
 - name: install FluidTYPO3 extensions
   command: "{{item.script}} {{item.arguments}}"
   with_items:
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install flux' }
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install fluidcontent' }
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install fluidpages' }
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install vhs' }
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install builder' }
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install fluidcontent_core' }
-    - { script: '/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install view' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install flux' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install fluidcontent' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install fluidpages' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install vhs' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install builder' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install fluidcontent_core' }
+    - { script: '/data/web/typo3/cli_dispatch.phpsh', arguments: 'extbase extension:install view' }
   tags:
     - fluidtypo3
     - fluidtypo3install
 
 - name: clone more typo3 extensions to typo3conf/ext
-  git: repo=https://github.com/TYPO3-extensions/{{item.extensionname}}.git dest=/data{{nginx_home_subfolder}}/typo3conf/ext/{{item.extensionname}} version={{item.version}}
+  git: repo=https://github.com/TYPO3-extensions/{{item.extensionname}}.git dest=/data/web/typo3conf/ext/{{item.extensionname}} version={{item.version}}
   with_items:
     - { extensionname: 'realurl', version: 'master' }
     - { extensionname: 'crawler', version: 'master' }
@@ -71,7 +71,7 @@
     - typo3extensionsclone
 
 - name: install typo3 extensions
-  command: "/data{{nginx_home_subfolder}}/typo3/cli_dispatch.phpsh extbase extension:install {{item.extensionname}}"
+  command: "/data/web/typo3/cli_dispatch.phpsh extbase extension:install {{item.extensionname}}"
   with_items:
     - { extensionname: 'realurl' }
     - { extensionname: 'crawler' }
