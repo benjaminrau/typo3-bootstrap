@@ -18,10 +18,8 @@ return array(
 	),
 	'EXT' => array(
 		'extConf' => array(
-			'linkvalidator' => 'a:0:{}',
 			'rsaauth' => 'a:1:{s:18:"temporaryDirectory";s:0:"";}',
 			'saltedpasswords' => 'a:2:{s:3:"BE.";a:4:{s:21:"saltedPWHashingMethod";s:41:"TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt";s:11:"forceSalted";i:0;s:15:"onlyAuthService";i:0;s:12:"updatePasswd";i:1;}s:3:"FE.";a:5:{s:7:"enabled";i:1;s:21:"saltedPWHashingMethod";s:41:"TYPO3\\CMS\\Saltedpasswords\\Salt\\PhpassSalt";s:11:"forceSalted";i:0;s:15:"onlyAuthService";i:0;s:12:"updatePasswd";i:1;}}',
-			'scheduler' => 'a:5:{s:11:"maxLifetime";s:4:"1440";s:11:"enableBELog";s:1:"1";s:15:"showSampleTasks";s:1:"1";s:11:"useAtdaemon";s:1:"0";s:30:"listShowTaskDescriptionAsHover";s:1:"1";}',
 		),
 	),
 	'FE' => array(
@@ -69,7 +67,7 @@ return array(
 		'enableDeprecationLog' => FALSE,
 		'encryptionKey' => '1e0c87d6151ef01d278156c179aa5f49576dc4e16bcf9894a6ba970740aa66a00781a25a7380049b624265ddbf3af3d8',
 		'isInitialInstallationInProgress' => FALSE,
-		'sitename' => 'TYPO3 Bootstrap',
+		'sitename' => '{{ sitename }}',
 		'sqlDebug' => 0,
 		'systemLogLevel' => 2,
 		't3lib_cs_convMethod' => 'mbstring',

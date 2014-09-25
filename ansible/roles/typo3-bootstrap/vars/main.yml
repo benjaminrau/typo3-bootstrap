@@ -1,4 +1,4 @@
-title: "TYPO3 Bootstrap"
+sitename: "TYPO3 Bootstrap"
 sys_domain: "{{domain}}"
 backend_user: admin
 backend_userpass: password

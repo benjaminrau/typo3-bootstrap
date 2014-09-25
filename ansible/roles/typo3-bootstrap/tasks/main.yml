@@ -1,6 +1,7 @@
 - name: create typo3 configuration matching the local env
   template: src=../templates/{{item.path}} dest=/data{{nginx_home_subfolder}}/typo3conf/{{item.dest}} mode={{item.mode}}
   with_items:
+    - { path: 'LocalConfiguration.php', dest: 'LocalConfiguration.php', mode: 644 }
     - { path: 'AdditionalConfiguration.php', dest: 'AdditionalConfiguration.php', mode: 644 }
   tags:
     - templates
