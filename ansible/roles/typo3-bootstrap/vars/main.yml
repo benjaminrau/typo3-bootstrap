@@ -1,4 +1,5 @@
 sitename: "TYPO3 Bootstrap"
 sys_domain: "{{domain}}"
+database_name: dev_typo3
 backend_user: admin
 backend_userpass: password
