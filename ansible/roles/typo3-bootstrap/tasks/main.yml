@@ -17,7 +17,11 @@
 - name: create a new database with name {{ database_name }}
   mysql_db: login_user=root login_password={{ mysql_root_password }} login_host=localhost name={{ database_name }} encoding=utf8 state=present
 
-- copy: src=../files/latest_dump.sql dest=/tmp
+
+- name: replace variables in mysql dump and copy to server
+  template: src=../templates/{{item.path}} dest=/tmp/{{item.dest}} mode={{item.mode}}
+  with_items:
+    - { path: 'latest_dump.sql', dest: 'latest_dump.sql', mode: 644 }
 
 - name: import latest database dump
   mysql_db: login_user=root login_password={{ mysql_root_password }} login_host=localhost name={{ database_name }} encoding=utf8 state=import target=/tmp/latest_dump.sql
